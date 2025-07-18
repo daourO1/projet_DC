@@ -93,7 +93,7 @@ elif menu == "🧼 Voir données brutes WebScraper":
     except FileNotFoundError:
         st.warning("Aucun fichier WebScraper trouvé.")
 
-        
+
 elif menu == "📊 Dashboard des données nettoyées":
     st.title("📊 Tableau de bord des données Web Scraper Nettoyées")
     try:
@@ -111,7 +111,7 @@ elif menu == "📊 Dashboard des données nettoyées":
             df = df[df['adresse'].isin(villes)]
 
         st.dataframe(df)
-        st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_nettoyes_filtre.csv")
+        st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_bruts.csv")
 
         # --- Affichage des graphiques ---
 
