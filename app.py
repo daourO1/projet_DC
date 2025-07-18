@@ -39,9 +39,9 @@ if menu == "🏠 Accueil":
     """)
 
 
-# Selenuim
-elif menu == "🕸️ Scraper CoinAfrique (Selenium)":
-    st.title("🚀 Lancer le scraping avec Selenium")
+# BeautifulSoup
+elif menu == "🕸️ Scraper CoinAfrique (BeautifulSoup)":
+    st.title("🚀 Lancer le scraping avec BeautifulSoup")
     nb_pages = st.number_input("📄 Nombre de pages à scraper :", min_value=1, max_value=10, value=1)
     st.info("Cliquez sur le bouton pour lancer le scraping en fonction du nombre de pages choisi.")
     if st.button("Lancer le scraping"):
@@ -54,16 +54,13 @@ elif menu == "🕸️ Scraper CoinAfrique (Selenium)":
                 capture_output=True,
                 text=True
             )
-
             if result.returncode == 0:
                 st.success(f"✅ Scraping terminé avec {nb_pages} pages.")
-                
-                # ✅ Affichage des données scrapées et netées
                 try:
                     df = pd.read_csv("donnees/coinafrique_nettoye.csv") 
                     st.write(f"Nombre de lignes : {len(df)}")
                     st.dataframe(df)
-                    st.download_button("📥 Télécharger ces données", df.to_csv(index=False), "coinafrique_nettoye.csv")
+                    st.download_button("📥 Télécharger ces données", df.to_csv(index=False), "coinafrique_nettoye_bs4.csv")
                 except Exception as e:
                     st.error(f"Erreur lors de l'affichage des données : {e}")
             else:
@@ -71,6 +68,7 @@ elif menu == "🕸️ Scraper CoinAfrique (Selenium)":
                 st.text(result.stderr)
         except Exception as e:
             st.error(f"Erreur : {e}")
+
 
 
 
