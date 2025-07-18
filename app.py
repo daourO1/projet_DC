@@ -96,49 +96,52 @@ elif menu == "🧼 Voir données brutes WebScraper":
 
 elif menu == "📊 Dashboard des données nettoyées":
     st.title("📊 Tableau de bord des données Web Scraper Nettoyées")
-    try:
-        df = pd.read_csv(CLEAN_CSV)
-        df = clean_dataframe(df)
-        st.write(f"Nombre de lignes : {len(df)}")
 
-        # Filtres
-        types = st.multiselect("Filtrer par type :", options=df['type'].unique())
-        if types:
-            df = df[df['type'].isin(types)]
+    if not os.path.exists(RAW_CSV):
+        st.warning(f"Le fichier brut {RAW_CSV} n'existe pas. Veuillez d'abord lancer le scraping.")
+    else:
+        try:
+            df = pd.read_csv(RAW_CSV)
+            df = clean_dataframe(df)  # nettoyage à la volée
 
-        villes = st.multiselect("Filtrer par adresse (ville) :", options=df['adresse'].unique())
-        if villes:
-            df = df[df['adresse'].isin(villes)]
+            st.write(f"Nombre de lignes : {len(df)}")
 
-        st.dataframe(df)
-        st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_bruts.csv")
+            # Filtres
+            types = st.multiselect("Filtrer par type :", options=df['type'].unique())
+            if types:
+                df = df[df['type'].isin(types)]
 
-        # --- Affichage des graphiques ---
+            villes = st.multiselect("Filtrer par adresse (ville) :", options=df['adresse'].unique())
+            if villes:
+                df = df[df['adresse'].isin(villes)]
 
-        if not df.empty:
+            st.dataframe(df)
+            st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_nettoyes_filtre.csv")
 
-            # Distribution du nombre d'annonces par type
-            st.subheader("Nombre d'annonces par type")
-            counts_type = df['type'].value_counts()
-            st.bar_chart(counts_type)
+            if not df.empty:
+                # Graphique : nombre d'annonces par type
+                st.subheader("Nombre d'annonces par type")
+                counts_type = df['type'].value_counts()
+                st.bar_chart(counts_type)
 
-            # Distribution du nombre d'annonces par adresse
-            st.subheader("Nombre d'annonces par adresse")
-            counts_adresse = df['adresse'].value_counts().head(10)  # top 10 adresses
-            st.bar_chart(counts_adresse)
+                # Graphique : top 10 adresses
+                st.subheader("Top 10 localisations (adresses)")
+                counts_adresse = df['adresse'].value_counts().head(10)
+                st.bar_chart(counts_adresse)
 
-            # Prix moyen par type (si la colonne 'prix' existe)
-            if 'prix' in df.columns:
-                df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
-                st.subheader("Prix moyen par type")
-                prix_moyen = df.groupby('type')['prix'].mean().sort_values(ascending=False)
-                st.bar_chart(prix_moyen)
+                # Graphique : prix moyen par type
+                if 'prix' in df.columns:
+                    df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
+                    st.subheader("Prix moyen par type")
+                    prix_moyen = df.groupby('type')['prix'].mean().sort_values(ascending=False)
+                    st.bar_chart(prix_moyen)
 
-        else:
-            st.info("Aucune donnée à afficher après filtrage.")
+            else:
+                st.info("Aucune donnée à afficher après filtrage.")
 
-    except FileNotFoundError:
-        st.warning("Aucun fichier nettoyé trouvé.")
+        except Exception as e:
+            st.error(f"Erreur lors du chargement ou du traitement des données : {e}")
+
 
 
 elif menu == "📋 Formulaire d'évaluation":
