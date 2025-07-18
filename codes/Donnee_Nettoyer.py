@@ -14,17 +14,17 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 from typing import List, Dict
 
-"""
-os.environ['WDM_LOG_LEVEL'] = '0' 
-os.environ['WDM_LOCAL'] = '1'
+chrome_options = Options()
+chrome_options.add_argument("--headless=new")  # Mode headless
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--window-size=1920,1080")
+chrome_options.add_argument(
+    "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+)
 
-options = Options()
-options.add_argument("--headless=new") 
-options.add_argument("--disable-gpu")
-options.add_argument("--no-sandbox")
-options.add_argument('--disable-dev-shm-usage')
 service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)"""
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Instantier l'objet chrome options
 options = webdriver.ChromeOptions()
@@ -44,7 +44,7 @@ urls = {
 # Liste pour stocker les données
 data = []
 for categorie, url in urls.items():
-    driver.get(url)
+    self.driver.get(url)
     time.sleep(3)
     # Lire le nombre de pages depuis une variable d’environnement
     nb_pages = int(os.environ.get("NB_PAGES", 10))  
