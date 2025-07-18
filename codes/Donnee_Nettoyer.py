@@ -8,6 +8,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 
+
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import re
+from typing import List, Dict
+
+"""
 os.environ['WDM_LOG_LEVEL'] = '0' 
 os.environ['WDM_LOCAL'] = '1'
 
@@ -17,7 +24,14 @@ options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
 options.add_argument('--disable-dev-shm-usage')
 service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
+driver = webdriver.Chrome(service=service, options=options)"""
+
+# Instantier l'objet chrome options
+options = webdriver.ChromeOptions()
+# définir l'option d'utiliser chrome en mode headless ( utiliser afin de lancer le script en background)
+options.add_argument("--headless=new")
+# initialiser l'instance de chrome driver en mode headless
+driver = webdriver.Chrome(options=options)
 
 # URLs à scraper
 urls = {
