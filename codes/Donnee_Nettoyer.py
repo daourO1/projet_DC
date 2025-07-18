@@ -8,9 +8,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 
+os.environ['WDM_LOG_LEVEL'] = '0' 
+
 options = Options()
 options.add_argument("--headless=new") 
-service = Service(executable_path="C:/WebDriver/bin/chromedriver.exe")
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
 # URLs à scraper
