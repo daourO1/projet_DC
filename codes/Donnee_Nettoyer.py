@@ -9,6 +9,7 @@ import time
 import os
 
 os.environ['WDM_LOG_LEVEL'] = '0' 
+os.environ['WDM_LOCAL'] = '1'
 
 options = Options()
 options.add_argument("--headless=new") 
