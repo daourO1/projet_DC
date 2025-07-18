@@ -93,6 +93,7 @@ elif menu == "🧼 Voir données brutes WebScraper":
     except FileNotFoundError:
         st.warning("Aucun fichier WebScraper trouvé.")
 
+        
 elif menu == "📊 Dashboard des données nettoyées":
     st.title("📊 Tableau de bord des données Web Scraper Nettoyées")
     try:
@@ -111,8 +112,34 @@ elif menu == "📊 Dashboard des données nettoyées":
 
         st.dataframe(df)
         st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_nettoyes_filtre.csv")
+
+        # --- Affichage des graphiques ---
+
+        if not df.empty:
+
+            # Distribution du nombre d'annonces par type
+            st.subheader("Nombre d'annonces par type")
+            counts_type = df['type'].value_counts()
+            st.bar_chart(counts_type)
+
+            # Distribution du nombre d'annonces par adresse
+            st.subheader("Nombre d'annonces par adresse")
+            counts_adresse = df['adresse'].value_counts().head(10)  # top 10 adresses
+            st.bar_chart(counts_adresse)
+
+            # Prix moyen par type (si la colonne 'prix' existe)
+            if 'prix' in df.columns:
+                df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
+                st.subheader("Prix moyen par type")
+                prix_moyen = df.groupby('type')['prix'].mean().sort_values(ascending=False)
+                st.bar_chart(prix_moyen)
+
+        else:
+            st.info("Aucune donnée à afficher après filtrage.")
+
     except FileNotFoundError:
         st.warning("Aucun fichier nettoyé trouvé.")
+
 
 elif menu == "📋 Formulaire d'évaluation":
     st.title("📋 Lien vers le formulaire")
