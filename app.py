@@ -20,7 +20,7 @@ SCRAPED_CSV = "projet_DC/coinafrique_nettoye.csv"
 st.sidebar.title("📂 Navigation")
 menu = st.sidebar.radio("Aller à :", [
     "🏠 Accueil",
-    "🕸️ Scraper CoinAfrique (Selenium)",
+    "🕸️ Scraper CoinAfrique (BeautifulSoup)",
     "📥 Données Web Scraper (brutes)",
     "📊 Dashboard des données nettoyées",
     "📝 Formulaire kobo"
