@@ -13,6 +13,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 from typing import List, Dict
+import platform
+
+# Détection OS
+if platform.system() == "Windows":
+    chromedriver_path = os.path.join("drivers", "chromedriver.exe")
+else:
+    chromedriver_path = os.path.join("drivers", "chromedriver")
 
 chrome_options = Options()
 chrome_options.add_argument("--headless=new")  # Mode headless
@@ -23,15 +30,9 @@ chrome_options.add_argument(
     "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 )
 
-service = Service(ChromeDriverManager().install())
+service = Service(executable_path=chromedriver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Instantier l'objet chrome options
-options = webdriver.ChromeOptions()
-# définir l'option d'utiliser chrome en mode headless ( utiliser afin de lancer le script en background)
-options.add_argument("--headless=new")
-# initialiser l'instance de chrome driver en mode headless
-driver = webdriver.Chrome(options=options)
 
 # URLs à scraper
 urls = {
@@ -44,7 +45,7 @@ urls = {
 # Liste pour stocker les données
 data = []
 for categorie, url in urls.items():
-    self.driver.get(url)
+    driver.get(url)
     time.sleep(3)
     # Lire le nombre de pages depuis une variable d’environnement
     nb_pages = int(os.environ.get("NB_PAGES", 10))  
