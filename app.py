@@ -14,8 +14,8 @@ st.set_page_config(page_title="CoinAfrique Scraper", layout="wide")
 # Menu
 menu = st.sidebar.selectbox(
     "Menu",
-    ["🏠 Accueil", "🕸️ Scraper CoinAfrique (BeautifulSoup)", "🧼 Voir données brutes WebScraper",
-     "📊 Dashboard des données nettoyées", "📋 Formulaire d'évaluation"]
+    ["Accueil", "Scraper CoinAfrique (BeautifulSoup)", "Voir données brutes WebScraper",
+     "Dashboard des données nettoyées", "Formulaire d'évaluation"]
 )
 
 # Nettoyage
@@ -39,7 +39,7 @@ def clean_dataframe(df):
     return df
 
 # Pages
-if menu == "🏠 Accueil":
+if menu == "Accueil":
     st.title("Bienvenue sur l'application CoinAfrique")
     st.markdown("""
         Cette application vous permet de :
@@ -49,8 +49,8 @@ if menu == "🏠 Accueil":
         - Soumettre un formulaire d'évaluation via Kobo
     """)
 
-elif menu == "🕸️ Scraper CoinAfrique (BeautifulSoup)":
-    st.title("🚀 Lancer le scraping avec BeautifulSoup")
+elif menu == "Scraper CoinAfrique (BeautifulSoup)":
+    st.title("Lancer le scraping avec BeautifulSoup")
     nb_pages = st.number_input("📄 Nombre de pages à scraper :", min_value=1, max_value=10, value=1)
     st.info("Cliquez sur le bouton pour lancer le scraping en fonction du nombre de pages choisi.")
 
@@ -67,35 +67,35 @@ elif menu == "🕸️ Scraper CoinAfrique (BeautifulSoup)":
             )
 
             if result.returncode == 0:
-                st.success(f"✅ Scraping terminé avec {nb_pages} pages.")
+                st.success(f"Scraping terminé avec {nb_pages} pages.")
                 try:
                     df = pd.read_csv(SCRAPED_CSV)
                     st.write(f"Nombre de lignes : {len(df)}")
                     st.dataframe(df)
-                    st.download_button("📥 Télécharger ces données", df.to_csv(index=False), "coinafrique_nettoye.csv")
+                    st.download_button("Télécharger ces données", df.to_csv(index=False), "coinafrique_nettoye.csv")
                 except Exception as e:
                     st.error(f"Erreur lors de l'affichage des données : {e}")
             else:
-                st.error("❌ Une erreur est survenue pendant le scraping.")
+                st.error("Une erreur est survenue pendant le scraping.")
                 st.code(result.stdout)
                 st.code(result.stderr)
 
         except Exception as e:
             st.error(f"Erreur : {e}")
 
-elif menu == "🧼 Voir données brutes WebScraper":
-    st.title("📥 Données brutes depuis WebScraper")
+elif menu == "Voir données brutes WebScraper":
+    st.title("Données brutes depuis WebScraper")
     try:
         df = pd.read_csv(RAW_CSV)
         st.write(f"Nombre de lignes : {len(df)}")
         st.dataframe(df)
-        st.download_button("📥 Télécharger les données brutes", df.to_csv(index=False), "webscraper_bruts.csv")
+        st.download_button("Télécharger les données brutes", df.to_csv(index=False), "webscraper_bruts.csv")
     except FileNotFoundError:
         st.warning("Aucun fichier WebScraper trouvé.")
 
 
-elif menu == "📊 Dashboard des données nettoyées":
-    st.title("📊 Tableau de bord des données Web Scraper Nettoyées")
+elif menu == "Dashboard des données nettoyées":
+    st.title("Tableau de bord des données Web Scraper Nettoyées")
 
     if not os.path.exists(RAW_CSV):
         st.warning(f"Le fichier brut {RAW_CSV} n'existe pas. Veuillez d'abord lancer le scraping.")
@@ -116,7 +116,7 @@ elif menu == "📊 Dashboard des données nettoyées":
                 df = df[df['adresse'].isin(villes)]
 
             st.dataframe(df)
-            st.download_button("📥 Télécharger les données filtrées", df.to_csv(index=False), "webscraper_nettoyes_filtre.csv")
+            st.download_button("Télécharger les données filtrées", df.to_csv(index=False), "webscraper_nettoyes_filtre.csv")
 
             if not df.empty:
                 # Graphique : nombre d'annonces par type
@@ -144,6 +144,6 @@ elif menu == "📊 Dashboard des données nettoyées":
 
 
 
-elif menu == "📋 Formulaire d'évaluation":
-    st.title("📋 Lien vers le formulaire")
+elif menu == "Formulaire d'évaluation":
+    st.title("Lien vers le formulaire")
     st.markdown(f"Veuillez remplir le formulaire ici : [Lien Kobo]({KOBO_URL})")
