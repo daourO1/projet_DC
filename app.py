@@ -14,7 +14,7 @@ st.set_page_config(page_title="CoinAfrique Scraper", layout="wide")
 # Menu
 menu = st.sidebar.selectbox(
     "Menu",
-    ["🏠 Accueil", "🕸️ Scraper CoinAfrique (Selenium)", "🧼 Voir données brutes WebScraper",
+    ["🏠 Accueil", "🕸️ Scraper CoinAfrique (BeautifulSoup)", "🧼 Voir données brutes WebScraper",
      "📊 Dashboard des données nettoyées", "📋 Formulaire d'évaluation"]
 )
 
@@ -49,8 +49,8 @@ if menu == "🏠 Accueil":
         - Soumettre un formulaire d'évaluation via Kobo
     """)
 
-elif menu == "🕸️ Scraper CoinAfrique (Selenium)":
-    st.title("🚀 Lancer le scraping avec Selenium")
+elif menu == "🕸️ Scraper CoinAfrique (BeautifulSoup)":
+    st.title("🚀 Lancer le scraping avec BeautifulSoup")
     nb_pages = st.number_input("📄 Nombre de pages à scraper :", min_value=1, max_value=10, value=1)
     st.info("Cliquez sur le bouton pour lancer le scraping en fonction du nombre de pages choisi.")
 
